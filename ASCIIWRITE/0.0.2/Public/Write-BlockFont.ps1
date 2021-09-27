@@ -31,13 +31,18 @@
 
     Writes the phrase LEET in ASCII block font with shadows in green and the center of the font in dark cyan and the outer of the font in dark magenta.    
 
+.EXAMPLE
+    .\Write-BlockFont -Phrase "LEET" -ShadowColor Green -Color1 DarkCyan -Color2 DarkMagenta -Frame -FrameColor Green  
+
+    Writes the phrase LEET in ASCII block font also with a frame in green
+
 .OUTPUTS
     writes to host
 
 .LINK
     
 .NOTES
-    Version: 0.0.1
+    Version: 0.0.2
     27 September, 2021
 #>
 Function Write-BlockFont
@@ -67,17 +72,28 @@ Function Write-BlockFont
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string] 
-        $ShadowColor = "White",          
+        $ShadowColor = "White",    
+        #FrameColor  
+        [Parameter(Mandatory=$false)]
+        [ValidateSet("Black","DarkBlue","DarkGreen","DarkCyan","DarkRed","DarkMagenta","DarkYellow","Gray","DarkGray","Blue","Green","Cyan","Red","Magenta","Yellow","White")]
+        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
+        [string] 
+        $FrameColor = "White",      
         [Parameter(Mandatory=$false)]
         [string]
-        $MyChar="█"   
+        $MyChar="█"  ,      
+        [Parameter(Mandatory=$false)]
+        [switch]
+        $Frame 
 
     )
 
 
 
 
-
+[String[]]$Lframe = "│  ","*","│  ","*","│  ","*","│  ","*","│  ","*","│  "
+[String[]]$Rframe = "│╗","*","│║","*","│║", "*","│║","*","│║","*","│║"
 [String[]]$SPACE = "      ","*","      ","*","      ", "*","      ","*","      ","*","      "
 [String[]]$DOT = "      ","*","      ","*","      ", "*","      ","*","██╗   ","*","╚═╝   "
 [String[]]$A = "  ██████╗     ","*","██╔═════██╗   ","*","██████████║   ","*","██╔═════██║   ","*","██║     ██║   ","*","╚═╝     ╚═╝   "
@@ -153,61 +169,110 @@ Function Create-BlockText
         [string]
         $ForegroundColor2       
     )
+    
     if($Phrase)
     {
-        $PHRASEOBJETCT = New-Object System.Collections.ArrayList
-        
+        $PHRASEOBJECT = New-Object System.Collections.ArrayList
+        if($Frame)
+        {
+            [VOID]$PHRASEOBJECT.add($Lframe)
+        }
         $arrString = $Phrase.ToCharArray() 
         foreach($Char in $arrString)
         {
             switch ($Char) {
-                "A" {[VOID]$PHRASEOBJETCT.add($A)}
-                "B" {[VOID]$PHRASEOBJETCT.add($B)}
-                "C" {[VOID]$PHRASEOBJETCT.add($C)}
-                "D" {[VOID]$PHRASEOBJETCT.add($D)}
-                "E" {[VOID]$PHRASEOBJETCT.add($E)}
-                "F" {[VOID]$PHRASEOBJETCT.add($F)}
-                "G" {[VOID]$PHRASEOBJETCT.add($G)}                
-                "H" {[VOID]$PHRASEOBJETCT.add($H)}                  
-                "I" {[VOID]$PHRASEOBJETCT.add($I)}
-                "J" {[VOID]$PHRASEOBJETCT.add($J)} 
-                "K" {[VOID]$PHRASEOBJETCT.add($K)}
-                "L" {[VOID]$PHRASEOBJETCT.add($L)}
-                "M" {[VOID]$PHRASEOBJETCT.add($M)}                
-                "N" {[VOID]$PHRASEOBJETCT.add($N)}
-                "O" {[VOID]$PHRASEOBJETCT.add($O)}
-                "Q" {[VOID]$PHRASEOBJETCT.add($Q)}                
-                "P" {[VOID]$PHRASEOBJETCT.add($P)}                
-                "R" {[VOID]$PHRASEOBJETCT.add($R)}
-                "S" {[VOID]$PHRASEOBJETCT.add($S)}
-                "T" {[VOID]$PHRASEOBJETCT.add($T)}                
-                "U" {[VOID]$PHRASEOBJETCT.add($U)}                   
-                "V" {[VOID]$PHRASEOBJETCT.add($V)}
-                "W" {[VOID]$PHRASEOBJETCT.add($W)}
-                "X" {[VOID]$PHRASEOBJETCT.add($X)}
-                "Y" {[VOID]$PHRASEOBJETCT.add($Y)}                
-                "Z" {[VOID]$PHRASEOBJETCT.add($Z)}
-                "1" {[VOID]$PHRASEOBJETCT.add($1)}
-                "2" {[VOID]$PHRASEOBJETCT.add($2)}
-                "3" {[VOID]$PHRASEOBJETCT.add($3)}
-                "4" {[VOID]$PHRASEOBJETCT.add($4)}                
-                "5" {[VOID]$PHRASEOBJETCT.add($5)}                     
-                "6" {[VOID]$PHRASEOBJETCT.add($6)}                      
-                "7" {[VOID]$PHRASEOBJETCT.add($7)}                
-                "8" {[VOID]$PHRASEOBJETCT.add($8)}                                
-                "9" {[VOID]$PHRASEOBJETCT.add($9)}
-                "0" {[VOID]$PHRASEOBJETCT.add($0)}
-                " " {[VOID]$PHRASEOBJETCT.add($SPACE)}
-                "." {[VOID]$PHRASEOBJETCT.add($DOT)}
-                Default {[VOID]$PHRASEOBJETCT.add($DOT)}
+                "A" {[VOID]$PHRASEOBJECT.add($A)}
+                "B" {[VOID]$PHRASEOBJECT.add($B)}
+                "C" {[VOID]$PHRASEOBJECT.add($C)}
+                "D" {[VOID]$PHRASEOBJECT.add($D)}
+                "E" {[VOID]$PHRASEOBJECT.add($E)}
+                "F" {[VOID]$PHRASEOBJECT.add($F)}
+                "G" {[VOID]$PHRASEOBJECT.add($G)}                
+                "H" {[VOID]$PHRASEOBJECT.add($H)}                  
+                "I" {[VOID]$PHRASEOBJECT.add($I)}
+                "J" {[VOID]$PHRASEOBJECT.add($J)} 
+                "K" {[VOID]$PHRASEOBJECT.add($K)}
+                "L" {[VOID]$PHRASEOBJECT.add($L)}
+                "M" {[VOID]$PHRASEOBJECT.add($M)}                
+                "N" {[VOID]$PHRASEOBJECT.add($N)}
+                "O" {[VOID]$PHRASEOBJECT.add($O)}
+                "Q" {[VOID]$PHRASEOBJECT.add($Q)}                
+                "P" {[VOID]$PHRASEOBJECT.add($P)}                
+                "R" {[VOID]$PHRASEOBJECT.add($R)}
+                "S" {[VOID]$PHRASEOBJECT.add($S)}
+                "T" {[VOID]$PHRASEOBJECT.add($T)}                
+                "U" {[VOID]$PHRASEOBJECT.add($U)}                   
+                "V" {[VOID]$PHRASEOBJECT.add($V)}
+                "W" {[VOID]$PHRASEOBJECT.add($W)}
+                "X" {[VOID]$PHRASEOBJECT.add($X)}
+                "Y" {[VOID]$PHRASEOBJECT.add($Y)}                
+                "Z" {[VOID]$PHRASEOBJECT.add($Z)}
+                "1" {[VOID]$PHRASEOBJECT.add($1)}
+                "2" {[VOID]$PHRASEOBJECT.add($2)}
+                "3" {[VOID]$PHRASEOBJECT.add($3)}
+                "4" {[VOID]$PHRASEOBJECT.add($4)}                
+                "5" {[VOID]$PHRASEOBJECT.add($5)}                     
+                "6" {[VOID]$PHRASEOBJECT.add($6)}                      
+                "7" {[VOID]$PHRASEOBJECT.add($7)}                
+                "8" {[VOID]$PHRASEOBJECT.add($8)}                                
+                "9" {[VOID]$PHRASEOBJECT.add($9)}
+                "0" {[VOID]$PHRASEOBJECT.add($0)}
+                " " {[VOID]$PHRASEOBJECT.add($SPACE)}
+                "." {[VOID]$PHRASEOBJECT.add($DOT)}
+                Default {[VOID]$PHRASEOBJECT.add($DOT)}
             }
+
         }
     }
-
+    if($Frame)
+    {
+        [VOID]$PHRASEOBJECT.add($Rframe)
+    }
+    [int]$LenOfAll = 0
+    foreach($LETTER in $PHRASEOBJECT)
+    {
+        $LenOfAll = $LenOfAll + $LETTER[0].ToString().Length
+        
+    }    
+    $LenOfAll = $LenOfAll -2
+    if($Frame)
+    {
+        for ($num = 0 ; $num -le $LenOfAll ; $num++)
+        {    
+            if($num -eq 0)
+            {
+                Write-Host -NoNewline "┌" -ForegroundColor $FrameColor
+            }
+            else {            
+                if($num -eq $LenOfAll)
+                {
+                    Write-Host "┐ " -ForegroundColor $FrameColor
+                }
+                else {
+                    Write-Host -NoNewline "─"  -ForegroundColor $FrameColor
+                }
+            }
+        }    
+    }
+    
     for ($num = 0 ; $num -le 12 ; $num++)
     {    
-        foreach($LETTER in $PHRASEOBJETCT)
+        $LetterCount = 0
+        $FrameLetter = $false
+        foreach($LETTER in $PHRASEOBJECT)
         {
+            $LetterCount++
+            if($Frame)
+            {
+                if(($LetterCount -eq 1) -or ($LetterCount -eq $PHRASEOBJECT.Count))
+                {
+                    $FrameLetter = $True
+                }
+                else {
+                    $FrameLetter = $false
+                }
+            }
+            
             foreach($LINE in $LETTER[$num])
             {
                 $LINE = $LINE.ToString().Replace("█",$MyChar)
@@ -220,6 +285,13 @@ Function Create-BlockText
                     $PREVLINE = $LINE
                 }
                 else {
+                    if($FrameLetter)
+                    {
+                        Write-Host -NoNewline $LINE -ForegroundColor $FrameColor
+                    }
+                    else {
+                        
+                    
                     if($ForegroundColor1)
                     {
                         if($num -le 6)
@@ -287,13 +359,52 @@ Function Create-BlockText
                             }
                         }                  
                     }
-                    
+                }
                     $PREVLINE = $LINE
                 }
             }
         }
 
     }
+    Write-Host "" 
+    if($Frame)
+    {
+        for ($num = 0 ; $num -le $LenOfAll ; $num++)
+        {    
+            if($num -eq 0)
+            {
+                Write-Host -NoNewline "└" -ForegroundColor $FrameColor
+            }
+            else {            
+                if($num -eq $LenOfAll)
+                {
+                    Write-Host "┘║" -ForegroundColor $FrameColor
+                }
+                else {
+                    Write-Host -NoNewline "─"  -ForegroundColor $FrameColor
+                }
+            }
+        }    
+    }    
+    if($Frame)
+    {
+        for ($num = 1 ; $num -le $LenOfAll ; $num++)
+        {    
+            if($num -eq 1)
+            {
+                Write-Host -NoNewline " ╚" -ForegroundColor $FrameColor
+            }
+            else {            
+                if($num -eq $LenOfAll)
+                {
+                    Write-Host "═╝" -ForegroundColor $FrameColor
+                }
+                else {
+                    Write-Host -NoNewline "═"  -ForegroundColor $FrameColor 
+                }
+            }
+        }    
+    }        
     Write-Host "" 
 }
 
