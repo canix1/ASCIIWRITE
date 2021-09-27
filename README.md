@@ -18,3 +18,7 @@ Write-BlockFont -Phrase "1337" -ShadowColor Green -Color1 "Cyan" -Color2 Magenta
 Write-BlockFont -Phrase "NULL" -Frame -FrameColor DarkYellow
 
 ![](https://github.com/canix1/ASCIIWRITE/blob/main/src/frame.png)
+
+Write-BlockFont -Phrase "AZURE AD" -MyChar "*" -Color1 Blue -Color2 Red -Frame -FrameColor DarkYellow -ShadowColor Green
+
+![](https://github.com/canix1/ASCIIWRITE/blob/main/src/mychar.png)
