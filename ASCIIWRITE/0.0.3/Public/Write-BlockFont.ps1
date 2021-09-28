@@ -42,8 +42,11 @@
 .LINK
     
 .NOTES
-    Version: 0.0.2
-    27 September, 2021
+    Version: 0.0.3
+    28 September, 2021
+
+    ## New
+    - ASCII character for dash
 #>
 Function Write-BlockFont
 {
@@ -96,6 +99,7 @@ Function Write-BlockFont
 [String[]]$Rframe = "│╗","*","│║","*","│║", "*","│║","*","│║","*","│║"
 [String[]]$SPACE = "      ","*","      ","*","      ", "*","      ","*","      ","*","      "
 [String[]]$DOT = "      ","*","      ","*","      ", "*","      ","*","██╗   ","*","╚═╝   "
+[String[]]$DASH = "           ","*","           ","*","██████╗    ","*","╚═════╝    ","*","           ","*","           "
 [String[]]$A = "  ██████╗     ","*","██╔═════██╗   ","*","██████████║   ","*","██╔═════██║   ","*","██║     ██║   ","*","╚═╝     ╚═╝   "
 [String[]]$B = "███████╗     ","*","██╔════██╗   ", "*","███████╔═╝   ", "*","██╔════██╗   ", "*","███████╔═╝   ","*","╚══════╝     " 
 [String[]]$C = "  ██████╗   ","*","██╔═════╝   ","*","██║         ","*","██║         ","*","╚═██████╗   ", "*","  ╚═════╝   "
@@ -219,6 +223,7 @@ Function Create-BlockText
                 "0" {[VOID]$PHRASEOBJECT.add($0)}
                 " " {[VOID]$PHRASEOBJECT.add($SPACE)}
                 "." {[VOID]$PHRASEOBJECT.add($DOT)}
+                "-" {[VOID]$PHRASEOBJECT.add($DASH)}
                 Default {[VOID]$PHRASEOBJECT.add($DOT)}
             }
 
