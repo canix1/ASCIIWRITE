@@ -1,8 +1,24 @@
 $ModulePath = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
-$PrivatePath = '{0}\Private\*.ps1' -f $ModulePath
-$PublicPath = '{0}\Public\*.ps1'-f $ModulePath
-$ScriptPath = '{0}\Script\*.ps1'-f $ModulePath
-$Scripts = Get-ChildItem -Path $ScriptPath,$PrivatePath, $PublicPath | Select-Object -ExpandProperty FullName
+
+$ScriptDir = New-Object System.Collections.ArrayList
+
+if(Test-Path("$ModulePath\Private"))
+{
+    $PrivatePath =  '{0}\Private\*.ps1' -f $ModulePath
+    [VOID]$ScriptDir.Add($PrivatePath)
+}
+if(Test-Path("$ModulePath\Public"))
+{
+    $PublicPath =  '{0}\Public\*.ps1' -f $ModulePath
+    [VOID]$ScriptDir.Add($PublicPath)
+}
+if(Test-Path("$ModulePath\Script"))
+{
+    $ScriptPath =  '{0}\Script\*.ps1' -f $ModulePath
+    [VOID]$ScriptDir.Add($ScriptPath)
+}
+
+$Scripts = Get-ChildItem -Path $ScriptDir | Select-Object -ExpandProperty FullName
 
 foreach($Script in $Scripts) {
         . $Script
