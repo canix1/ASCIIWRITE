@@ -12,7 +12,7 @@
 RootModule = 'ASCIIWRITE.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.3'
+ModuleVersion = '1.0.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -33,7 +33,7 @@ Copyright = '(c) 2019 Robin Granberg. All rights reserved.'
 Description = 'Write ASCII Block Font'
 
 # Minimum version of the Windows PowerShell engine required by this module
-PowerShellVersion = '7.1.1'
+#PowerShellVersion = ''
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
@@ -97,10 +97,10 @@ PrivateData = @{
         Tags = 'ASCII','Font','Write'
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'http://www.apache.org/licenses/LICENSE-2.0'
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/canix1/ASCIIWRITE'
 
         # A URL to an icon representing this module.
         # IconUri = ''

@@ -42,19 +42,27 @@
 .LINK
     
 .NOTES
-    Version: 0.0.3
-    28 September, 2021
 
-    ## New
-    - ASCII character for dash
+**Version: 1.0.0**
+
+**9 November, 2023**
+
+**New Features**
+* Support for Windows PowerShell 5.1
+
+
 #>
 Function Write-BlockFont
 {
-    [CmdletBinding()]
+    # AUTHOR: Robin Granberg (robin.granberg@protonmail.com)
+    # 9 November, 2023
+    # Version: 1.0.0
+    [CmdletBinding(DefaultParameterSetName = "Letter")]
     param (
         [Parameter(Mandatory=$True)]
         [string]
         $Phrase,
+
         # Color 1.
         [Parameter(Mandatory=$false)]
         [ValidateSet("Black","DarkBlue","DarkGreen","DarkCyan","DarkRed","DarkMagenta","DarkYellow","Gray","DarkGray","Blue","Green","Cyan","Red","Magenta","Yellow","White")]
@@ -62,13 +70,15 @@ Function Write-BlockFont
         [ValidateNotNullOrEmpty()]
         [string] 
         $Color1 = "White",
+
         # Color 2.
         [Parameter(Mandatory=$false)]
         [ValidateSet("Black","DarkBlue","DarkGreen","DarkCyan","DarkRed","DarkMagenta","DarkYellow","Gray","DarkGray","Blue","Green","Cyan","Red","Magenta","Yellow","White")]
         [ValidateNotNull()]
         [ValidateNotNullOrEmpty()]
         [string] 
-        $Color2 = "White",    
+        $Color2 = "White", 
+           
         #ShadowColor  
         [Parameter(Mandatory=$false)]
         [ValidateSet("Black","DarkBlue","DarkGreen","DarkCyan","DarkRed","DarkMagenta","DarkYellow","Gray","DarkGray","Blue","Green","Cyan","Red","Magenta","Yellow","White")]
@@ -76,6 +86,7 @@ Function Write-BlockFont
         [ValidateNotNullOrEmpty()]
         [string] 
         $ShadowColor = "White",    
+
         #FrameColor  
         [Parameter(Mandatory=$false)]
         [ValidateSet("Black","DarkBlue","DarkGreen","DarkCyan","DarkRed","DarkMagenta","DarkYellow","Gray","DarkGray","Blue","Green","Cyan","Red","Magenta","Yellow","White")]
@@ -83,9 +94,18 @@ Function Write-BlockFont
         [ValidateNotNullOrEmpty()]
         [string] 
         $FrameColor = "White",      
-        [Parameter(Mandatory=$false)]
-        [string]
-        $MyChar="█"  ,      
+
+        [Parameter(Mandatory=$false,
+        ParameterSetName='Letter')]
+        [ValidateSet(888,9617,9618,9619)]
+        [int]
+        $LetterChar=9619,      
+
+        [Parameter(Mandatory=$false,
+        ParameterSetName='Custom')]
+        [int]
+        $CustomChar,
+
         [Parameter(Mandatory=$false)]
         [switch]
         $Frame 
@@ -93,49 +113,72 @@ Function Write-BlockFont
     )
 
 
+if($CustomChar)
+{
+    $WrittenLetterChar =$CustomChar
+}
+else
+{
+    $WrittenLetterChar=$LetterChar
+}
 
 
-[String[]]$Lframe = "│  ","*","│  ","*","│  ","*","│  ","*","│  ","*","│  "
-[String[]]$Rframe = "│╗","*","│║","*","│║", "*","│║","*","│║","*","│║"
+[String[]]$Lframe = "A  ","*","A  ","*","A  ","*","A  ","*","A  ","*","A  "
+[String[]]$Rframe = "BY","*","AS","*","AS", "*","AS","*","AS","*","AS"
 [String[]]$SPACE = "      ","*","      ","*","      ", "*","      ","*","      ","*","      "
-[String[]]$DOT = "      ","*","      ","*","      ", "*","      ","*","██╗   ","*","╚═╝   "
-[String[]]$DASH = "           ","*","           ","*","██████╗    ","*","╚═════╝    ","*","           ","*","           "
-[String[]]$A = "  ██████╗     ","*","██╔═════██╗   ","*","██████████║   ","*","██╔═════██║   ","*","██║     ██║   ","*","╚═╝     ╚═╝   "
-[String[]]$B = "███████╗     ","*","██╔════██╗   ", "*","███████╔═╝   ", "*","██╔════██╗   ", "*","███████╔═╝   ","*","╚══════╝     " 
-[String[]]$C = "  ██████╗   ","*","██╔═════╝   ","*","██║         ","*","██║         ","*","╚═██████╗   ", "*","  ╚═════╝   "
-[String[]]$D = "███████╗     ","*","██╔════██╗   ","*","██║    ██║   ","*","██║    ██║   ","*","███████╔╝    ","*","╚══════╝     "
-[String[]]$E = "███████╗   ","*","██╔════╝   ","*","██████╗    ","*","██╔═══╝    ","*","███████╗   ","*","╚══════╝   "
-[String[]]$F = "███████╗   ","*","██╔════╝   ","*","██████╗    ","*","██╔═══╝    ","*","██║        ","*","╚═╝        "
-[String[]]$G = "  ███████╗   ","*","██╔══════╝   ","*","██║  ████╗   ","*","██║    ██║   ","*","╚═███████║   ","*","  ╚══════╝   "
-[String[]]$H = "██╗    ██╗   ","*","██║    ██║   ","*","█████████║   ","*","██╔════██║   ","*","██║    ██║   ","*","╚═╝    ╚═╝   "
-[String[]]$I = "██╗   ","*","██║   ","*","██║   ", "*","██║   ","*","██║   ","*","╚═╝   "
-[String[]]$J = "     ██╗   ","*","     ██║   ","*","     ██║   ","*","     ██║   ","*","██████╔╝   ","*","╚═════╝    "
-[String[]]$K = "██╗   ██╗   ","*","██║ ██╔═╝   ","*","█████╔╝     ","*","██╔═██╗     ","*","██║  ╚██╗   ", "*","╚═╝   ╚═╝   "
-[String[]]$L = "██╗        ","*","██║        ","*","██║        ","*","██║        ","*","███████╗   ","*","╚══════╝   "
-[String[]]$M = "██╗     ██╗   ","*","████╗ ████║   ","*","██╔═██╔═██║   ","*","██║ ╚═╝ ██║   ","*","██║     ██║   ","*","╚═╝     ╚═╝   "
-[String[]]$N = "██╗     ██╗   ","*","████╗   ██║   ","*","██╔═██╗ ██║   ","*","██║ ╚═████║   ","*","██║   ╚═██║   ","*","╚═╝     ╚═╝   " 
-[String[]]$O = "  ██████╗     ","*","██╔═════██╗   ","*","██║     ██║   ","*","██║     ██║   ","*","╚═██████╔═╝   ","*","  ╚═════╝     "
-[String[]]$P = "██████╗     ","*","██╔═══██╗   ","*","██████╔═╝   ","*","██╔═══╝     ","*","██║         ","*","╚═╝         "
-[String[]]$Q = "  ██████╗       ","*","██╔═════██╗     ","*","██║     ██║     ","*","██║   ████║     ","*","╚═██████╔═██╗   ","*","  ╚═════╝ ╚═╝   "
-[String[]]$R = "██████╗     ","*","██╔═══██╗   ","*","██████╔═╝   ","*","██╔══██╗    ","*","██║   ██╗   ","*","╚═╝   ╚═╝   "
-[String[]]$S = "  ████████╗   ","*","██╔═══════╝   ","*","╚═██████╗     ","*","  ╚═════██╗   ","*","████████╔═╝   ","*","╚═══════╝     "
-[String[]]$T = "██████████╗   ","*"," ╚══██╔═══╝   ","*","    ██║       ","*","    ██║       ","*","    ██║       ","*","    ╚═╝       "
-[String[]]$U = "██╗     ██╗   ","*","██║     ██║   ","*","██║     ██║   ","*","██║     ██║   ","*","╚═██████╔═╝   ","*","  ╚═════╝     "
-[String[]]$V = "██╗     ██╗   ","*","██║     ██║   ","*","╚═██╗ ██╔═╝   ","*","  ██║ ██║     ","*","  ╚═██╔═╝     ","*","    ╚═╝       "
-[String[]]$W = "██╗     ██╗   ","*","██║ ██╗ ██║   ","*","██║ ██║ ██║   ","*","██║ ██║ ██║   ","*","╚═██████╔═╝   ","*","  ╚═════╝     "
-[String[]]$X = "██╗     ██╗   ","*","╚═██╗ ██╔═╝   ","*","  ╚═██╔═╝     ","*","  ██╔╝██╗     ","*","██╔═╝ ╚═██╗   ","*","╚═╝     ╚═╝   " 
-[String[]]$Y = "██      ██╗   ","*","██      ██║   ","*","╚═██████╔═╝   ","*","  ╚═██╔═╝     ","*","    ██║       ","*","    ╚═╝       "
-[String[]]$Z = "██████████╗   ","*","╚═════██╔═╝   ","*","    ██╔═╝     ","*","  ██╔═╝       ","*","██████████╗   ","*","╚═════════╝   "
-[String[]]$1 = "████╗     ","*","╚═██║     ","*","  ██║     ", "*","  ██║     ","*","██████╗   ","*","╚═════╝   "
-[String[]]$2 = "██████████╗   ","*","╚═══════██║   ","*","  ██████╔═╝   ","*","██╔═════╝     ","*","██████████╗   ","*","╚═════════╝   "
-[String[]]$3 = "███████╗     ","*","╚══════██╗   ", "*","  █████╔═╝   ", "*","  ╚════██╗   ", "*","███████╔═╝   ","*","╚══════╝     " 
-[String[]]$4 = "██╗    ██╗   ","*","██║    ██║   ","*","█████████║   ","*","╚══════██║   ","*","       ██║   ","*","       ╚═╝   "
-[String[]]$5 = "██████████╗   ","*","██╔═══════╝   ","*","╚═██████╗     ","*","  ╚═════██╗   ","*","████████╔═╝   ","*","╚═══════╝     "
-[String[]]$6 = "  ████████╗   ","*","██╔═══════╝   ","*","████████╗     ","*","██╚═════██╗   ","*","╚═██████╔═╝   ","*","  ╚═════╝     "
-[String[]]$7 = "██████████╗   ","*","╚═══════██║   ","*","      ██╔═╝   ","*","    ██╔═╝     ","*","    ██║       ","*","    ╚═╝       "
-[String[]]$8 = "  ██████╗     ","*","██╔═════██╗   ","*","  ██████╔═╝   ","*","██╔═════██╗   ","*","  ███████╔╝   ","*","  ╚══════╝    "
-[String[]]$9 = "██████████╗   ","*","██╔═════██║   ","*","██████████║   ","*","╚═══════██║   ","*","██████████║   ","*","╚═════════╝   "
-[String[]]$0 = "██████████╗   ","*","██╔═════██║   ","*","██║     ██║   ","*","██║     ██║   ","*","██████████║   ","*","╚═════════╝   "
+[String[]]$DOT = "      ","*","      ","*","      ", "*","      ","*","PPY   ","*","OIC   "
+[String[]]$DASH = "           ","*","           ","*","PPPPPPY    ","*","OIIIIIC    ","*","           ","*","           "
+[String[]]$A = "  PPPPPPY     ","*","PPLIIIIIPPY   ","*","PPPPPPPPPPS   ","*","PPLIIIIIPPS   ","*","PPS     PPS   ","*","OIC     OIC   "
+[String[]]$B = "PPPPPPPY     ","*","PPLIIIIPPY   ", "*","PPPPPPPLIC   ", "*","PPLIIIIPPY   ", "*","PPPPPPPLIC   ","*","OIIIIIIC     " 
+[String[]]$C = "  PPPPPPY   ","*","PPLIIIIIC   ","*","PPS         ","*","PPS         ","*","OIPPPPPPY   ", "*","  OIIIIIC   "
+[String[]]$D = "PPPPPPPY     ","*","PPLIIIIPPY   ","*","PPS    PPS   ","*","PPS    PPS   ","*","PPPPPPPLC    ","*","OIIIIIIC     "
+[String[]]$E = "PPPPPPPY   ","*","PPLIIIIC   ","*","PPPPPPY    ","*","PPLIIIC    ","*","PPPPPPPY   ","*","OIIIIIIC   "
+[String[]]$F = "PPPPPPPY   ","*","PPLIIIIC   ","*","PPPPPPY    ","*","PPLIIIC    ","*","PPS        ","*","OIC        "
+[String[]]$G = "  PPPPPPPY   ","*","PPLIIIIIIC   ","*","PPS  PPPPY   ","*","PPS    PPS   ","*","OIPPPPPPPS   ","*","  OIIIIIIC   "
+[String[]]$H = "PPY    PPY   ","*","PPS    PPS   ","*","PPPPPPPPPS   ","*","PPLIIIIPPS   ","*","PPS    PPS   ","*","OIC    OIC   "
+[String[]]$I = "PPY   ","*","PPS   ","*","PPS   ", "*","PPS   ","*","PPS   ","*","OIC   "
+[String[]]$J = "     PPY   ","*","     PPS   ","*","     PPS   ","*","     PPS   ","*","PPPPPPLC   ","*","OIIIIIC    "
+[String[]]$K = "PPY   PPY   ","*","PPS PPLIC   ","*","PPPPPLC     ","*","PPLIPPY     ","*","PPS  OPPY   ", "*","OIC   OIC   "
+[String[]]$L = "PPY        ","*","PPS        ","*","PPS        ","*","PPS        ","*","PPPPPPPY   ","*","OIIIIIIC   "
+[String[]]$M = "PPY     PPY   ","*","PPPPY PPPPS   ","*","PPLIPPLIPPS   ","*","PPS OIC PPS   ","*","PPS     PPS   ","*","OIC     OIC   "
+[String[]]$N = "PPY     PPY   ","*","PPPPY   PPS   ","*","PPLIPPY PPS   ","*","PPS OIPPPPS   ","*","PPS   OIPPS   ","*","OIC     OIC   " 
+[String[]]$O = "  PPPPPPY     ","*","PPLIIIIIPPY   ","*","PPS     PPS   ","*","PPS     PPS   ","*","OIPPPPPPLIC   ","*","  OIIIIIC     "
+[String[]]$P = "PPPPPPY     ","*","PPLIIIPPY   ","*","PPPPPPLIC   ","*","PPLIIIC     ","*","PPS         ","*","OIC         "
+[String[]]$Q = "  PPPPPPY       ","*","PPLIIIIIPPY     ","*","PPS     PPS     ","*","PPS   PPPPS     ","*","OIPPPPPPLIPPY   ","*","  OIIIIIC OIC   "
+[String[]]$R = "PPPPPPY     ","*","PPLIIIPPY   ","*","PPPPPPLIC   ","*","PPLIIPPY    ","*","PPS   PPY   ","*","OIC   OIC   "
+[String[]]$S = "  PPPPPPPPY   ","*","PPLIIIIIIIC   ","*","OIPPPPPPY     ","*","  OIIIIIPPY   ","*","PPPPPPPPLIC   ","*","OIIIIIIIC     "
+[String[]]$T = "PPPPPPPPPPY   ","*"," OIIPPLIIIC   ","*","    PPS       ","*","    PPS       ","*","    PPS       ","*","    OIC       "
+[String[]]$U = "PPY     PPY   ","*","PPS     PPS   ","*","PPS     PPS   ","*","PPS     PPS   ","*","OIPPPPPPLIC   ","*","  OIIIIIC     "
+[String[]]$V = "PPY     PPY   ","*","PPS     PPS   ","*","OIPPY PPLIC   ","*","  PPS PPS     ","*","  OIPPLIC     ","*","    OIC       "
+[String[]]$W = "PPY     PPY   ","*","PPS PPY PPS   ","*","PPS PPS PPS   ","*","PPS PPS PPS   ","*","OIPPPPPPLIC   ","*","  OIIIIIC     "
+[String[]]$X = "PPY     PPY   ","*","OIPPY PPLIC   ","*","  OIPPLIC     ","*","  PPLCPPY     ","*","PPLIC OIPPY   ","*","OIC     OIC   " 
+[String[]]$Y = "PP      PPY   ","*","PP      PPS   ","*","OIPPPPPPLIC   ","*","  OIPPLIC     ","*","    PPS       ","*","    OIC       "
+[String[]]$Z = "PPPPPPPPPPY   ","*","OIIIIIPPLIC   ","*","    PPLIC     ","*","  PPLIC       ","*","PPPPPPPPPPY   ","*","OIIIIIIIIIC   "
+[String[]]$1 = "PPPPY     ","*","OIPPS     ","*","  PPS     ", "*","  PPS     ","*","PPPPPPY   ","*","OIIIIIC   "
+[String[]]$2 = "PPPPPPPPPPY   ","*","OIIIIIIIPPS   ","*","  PPPPPPLIC   ","*","PPLIIIIIC     ","*","PPPPPPPPPPY   ","*","OIIIIIIIIIC   "
+[String[]]$3 = "PPPPPPPY     ","*","OIIIIIIPPY   ", "*","  PPPPPLIC   ", "*","  OIIIIPPY   ", "*","PPPPPPPLIC   ","*","OIIIIIIC     " 
+[String[]]$4 = "PPY    PPY   ","*","PPS    PPS   ","*","PPPPPPPPPS   ","*","OIIIIIIPPS   ","*","       PPS   ","*","       OIC   "
+[String[]]$5 = "PPPPPPPPPPY   ","*","PPLIIIIIIIC   ","*","OIPPPPPPY     ","*","  OIIIIIPPY   ","*","PPPPPPPPLIC   ","*","OIIIIIIIC     "
+[String[]]$6 = "  PPPPPPPPY   ","*","PPLIIIIIIIC   ","*","PPPPPPPPY     ","*","PPOIIIIIPPY   ","*","OIPPPPPPLIC   ","*","  OIIIIIC     "
+[String[]]$7 = "PPPPPPPPPPY   ","*","OIIIIIIIPPS   ","*","      PPLIC   ","*","    PPLIC     ","*","    PPS       ","*","    OIC       "
+[String[]]$8 = "  PPPPPPY     ","*","PPLIIIIIPPY   ","*","  PPPPPPLIC   ","*","PPLIIIIIPPY   ","*","  PPPPPPPLC   ","*","  OIIIIIIC    "
+[String[]]$9 = "PPPPPPPPPPY   ","*","PPLIIIIIPPS   ","*","PPPPPPPPPPS   ","*","OIIIIIIIPPS   ","*","PPPPPPPPPPS   ","*","OIIIIIIIIIC   "
+[String[]]$0 = "PPPPPPPPPPY   ","*","PPLIIIIIPPS   ","*","PPS     PPS   ","*","PPS     PPS   ","*","PPPPPPPPPPS   ","*","OIIIIIIIIIC   "
+
+$intCharBorderHorizontal1 = 9552
+$intCharBorderLowRight1 = 9565
+$intCharBorderHorizontal2 = 9472
+$intCharBorderVertical1 = 9553
+$intCharBorderLowLeft1 = 9562
+$intCharBorderLowRight2 = 9496
+$intCharBorderLowLeft2 = 9492
+$intCharBorderVertical2 = 9474
+$intCharBorderUpperRight1 = 9556
+$intCharBorderUpperLeft1 = 9559
+$intCharBorderUpperRight2 = 9488
+$intCharBorderUpperLeft2 =9484
+$intCharBorderLowLeft2Connect = 9573
+$intCharBorderVerticalConnect2 = 9566
 
 Function Test-ShadowStrings
 {
@@ -143,18 +186,14 @@ Function Test-ShadowStrings
     param (
         [Parameter()]
         [string]
-        $Teststring
+        $Testchar
     )
 
-    switch ($Char)
+    # if the char is not the same as the main letter char return True
+    switch ($Testchar)
     {
-        "╗"{$true}
-        "╚"{$true}
-        "═"{$true}
-        "╝"{$true}
-        "╔"{$true}
-        "║"{$true}
-        default{$false}
+        $([char]$WrittenLetterChar){$false}
+        default{$true}
     }
 
 
@@ -246,15 +285,15 @@ Function Create-BlockText
         {    
             if($num -eq 0)
             {
-                Write-Host -NoNewline "┌" -ForegroundColor $FrameColor
+                Write-Host -NoNewline $([char]$intCharBorderUpperLeft2) -ForegroundColor $FrameColor
             }
             else {            
                 if($num -eq $LenOfAll)
                 {
-                    Write-Host "┐ " -ForegroundColor $FrameColor
+                    Write-Host "$([char]$intCharBorderUpperRight2)" -ForegroundColor $FrameColor
                 }
                 else {
-                    Write-Host -NoNewline "─"  -ForegroundColor $FrameColor
+                    Write-Host -NoNewline "$([char]$intCharBorderHorizontal2)"  -ForegroundColor $FrameColor
                 }
             }
         }    
@@ -280,7 +319,17 @@ Function Create-BlockText
             
             foreach($LINE in $LETTER[$num])
             {
-                $LINE = $LINE.ToString().Replace("█",$MyChar)
+                $LINE = $LINE.ToString().Replace("P",[char]$WrittenLetterChar)
+                $LINE = $LINE.ToString().Replace("Y","$([char]$intCharBorderUpperLeft1)")
+                $LINE = $LINE.ToString().Replace("S","$([char]$intCharBorderVertical1)")  
+                $LINE = $LINE.ToString().Replace("C","$([char]$intCharBorderLowRight1)") 
+                $LINE = $LINE.ToString().Replace("O","$([char]$intCharBorderLowLeft1)") 
+                $LINE = $LINE.ToString().Replace("I","$([char]$intCharBorderHorizontal1)") 
+                $LINE = $LINE.ToString().Replace("L","$([char]$intCharBorderUpperRight1)")
+                $LINE = $LINE.ToString().Replace("A","$([char]$intCharBorderVertical2)")
+                $LINE = $LINE.ToString().Replace("B","$([char]$intCharBorderVerticalConnect2)")
+                 
+                 
                 if($LINE -eq "*")
                 {
                     if($PREVLINE -ne "*")
@@ -378,15 +427,19 @@ Function Create-BlockText
         {    
             if($num -eq 0)
             {
-                Write-Host -NoNewline "└" -ForegroundColor $FrameColor
+                Write-Host -NoNewline "$([char]$intCharBorderLowLeft2)" -ForegroundColor $FrameColor
+            }
+            elseif($num -eq 1)
+            {
+                Write-Host -NoNewline "$([char]$intCharBorderLowLeft2Connect)" -ForegroundColor $FrameColor
             }
             else {            
                 if($num -eq $LenOfAll)
                 {
-                    Write-Host "┘║" -ForegroundColor $FrameColor
+                    Write-Host "$([char]$intCharBorderLowRight2)$([char]$intCharBorderVertical1)" -ForegroundColor $FrameColor
                 }
                 else {
-                    Write-Host -NoNewline "─"  -ForegroundColor $FrameColor
+                    Write-Host -NoNewline "$([char]$intCharBorderHorizontal2)"  -ForegroundColor $FrameColor
                 }
             }
         }    
@@ -397,15 +450,15 @@ Function Create-BlockText
         {    
             if($num -eq 1)
             {
-                Write-Host -NoNewline " ╚" -ForegroundColor $FrameColor
+                Write-Host -NoNewline " $([char]$intCharBorderLowLeft1)" -ForegroundColor $FrameColor
             }
             else {            
                 if($num -eq $LenOfAll)
                 {
-                    Write-Host "═╝" -ForegroundColor $FrameColor
+                    Write-Host "$([char]$intCharBorderHorizontal1)$([char]$intCharBorderLowRight1)" -ForegroundColor $FrameColor
                 }
                 else {
-                    Write-Host -NoNewline "═"  -ForegroundColor $FrameColor 
+                    Write-Host -NoNewline "$([char]$intCharBorderHorizontal1)"  -ForegroundColor $FrameColor 
                 }
             }
         }    
